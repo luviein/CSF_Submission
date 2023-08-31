@@ -1,1 +1,51 @@
-<p>view2 works!</p>
+
+<h1>Share A News</h1>
+
+<form [formGroup]="form" (ngSubmit)="process()">
+
+  <table>
+    <tr>
+      <td>Title:</td>
+      <td><input formControlName="title"></td>
+    </tr>
+    <tr>
+      <td>Photo:</td>
+      <td><input type="file" name="photo" #photoUpload required></td>
+    </tr>
+    <tr>
+      <td>Description:</td>
+      <td><textarea formControlName="description" cols="30" rows="10"></textarea></td>
+    </tr>
+    <tr>
+      <td>Tags:</td>
+      <td><input formControlName="tags" [(ngModel)]="tag" ></td>
+      <p >tag: {{tag}}</p>
+      <td><button type="button" (click)="addTag()"> + </button></td>
+
+    </tr>
+    <tr>
+      <td>
+        <div *ngIf="tagsArray.length > 0; else noItems">
+          <div *ngFor="let tag of tagsArray; let i = index">
+            <span hidden>{{i}}</span>
+            <span id="tag">{{tag}} <button type="button" (click)="removeTag(i)"> - </button></span>
+          </div>
+
+        </div>
+      </td>
+    </tr>
+    <ng-template #noItems>
+
+      <h4>No tags right now. Add one?</h4>
+    </ng-template>
+
+    <tr>
+      <td><button [routerLink]="['/']">Back</button></td>
+      <td><button type="submit" [disabled]="!form.valid" >Post News</button></td>
+    </tr>
+  </table>
+
+
+
+
+</form>

@@ -9,6 +9,7 @@ public class News {
 
 	private String id;
 	private long postDate;
+
 	private String title;
 	private String description;
 	private String image;
@@ -17,8 +18,7 @@ public class News {
 	public void setId(String id) { this.id = id; }
 	public String getId() { return this.id; }
 
-	public void setPostDate(long postDate) { this.postDate = postDate; }
-	public long getPostDate() { return this.postDate; }
+	
 	public Date getPostDateAsDate() { return new Date(this.postDate); }
 
 	public void setTitle(String title) { this.title = title; }
@@ -33,10 +33,25 @@ public class News {
 	public void setTags(List<String> tags) { this.tags = tags; }
 	public List<String> getTags() { return this.tags; }
 
+	public long getPostDate() {
+		return postDate;
+	}
+	public void setPostDate(long postDate) {
+		this.postDate = postDate;
+	}
 	@Override
 	public String toString() {
-		return "News{id: %s, postDate: %d, title: %s}".formatted(id, getPostDateAsDate(), title);
+		return "News [id=" + id + ", postDate2=" + postDate +  ", title=" + title
+				+ ", description=" + description + ", image=" + image + ", tags=" + tags + "]";
 	}
+	
+	
+	
+
+	// @Override
+	// public String toString() {
+	// 	return "News{id: %s, postDate: %d, title: %s}".formatted(id, getPostDateAsDate(), title);
+	// }
 
 	/* Do not modify this file */
 }
