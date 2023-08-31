@@ -15,6 +15,10 @@ public class News {
 	private String image;
 	private List<String> tags;
 
+	public News(String string, Long long1, String string2, String string3, String string4, List<String> list) {
+	}
+	public News() {
+	}
 	public void setId(String id) { this.id = id; }
 	public String getId() { return this.id; }
 

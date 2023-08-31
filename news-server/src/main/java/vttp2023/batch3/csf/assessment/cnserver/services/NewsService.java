@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.yaml.snakeyaml.nodes.Tag;
 
+import vttp2023.batch3.csf.assessment.cnserver.Utils.Utils;
 import vttp2023.batch3.csf.assessment.cnserver.models.News;
 import vttp2023.batch3.csf.assessment.cnserver.models.TagCount;
 import vttp2023.batch3.csf.assessment.cnserver.repositories.ImageRepository;
@@ -26,7 +27,7 @@ public class NewsService {
 	@Autowired
 	private NewsRepository newsRepo;
 	
-	Map<String, Integer> tagMap = new HashMap<>();
+
 	
 	
 	// TODO: Task 1
@@ -41,28 +42,28 @@ public class NewsService {
 	// Do not change the method name and the return type
 	// You may add any number of parameters
 	// Returns a list of tags and their associated count
-	public List<TagCount> getTags(/* Any number of parameters */Integer time) {
-		List<TagCount> totalTags = new LinkedList<>();
-		List<Document> topTags = this.newsRepo.getTagAndTime(time);
-
-
-		for(Document tagDoc : topTags) {
-			List<String> tags = tagDoc.getList("tags", String.class);
-			for(String tag : tags) {
-				var newCount = new TagCount(tag, 1);
-				totalTags.add(newCount);
-			}
-
+	public List<TagCount> getTags(/* Any number of parameters */) {
+		List<TagCount> tagCountList = new LinkedList<>();
+		List<Document> tagCounts = this.newsRepo.getTagAndCount();
+		for(Document tag : tagCounts) {
+			var newCount = new TagCount(tag.getString("_id"), tag.getInteger("count"));
+			tagCountList.add(newCount);
 		}
-		return totalTags;
+		return tagCountList;
 	}
 
 	// TODO: Task 3
 	// Do not change the method name and the return type
 	// You may add any number of parameters
 	// Returns a list of news
-	public List<News> getNewsByTag(/* Any number of parameters */) {
-		return new LinkedList<>();
+	public List<News> getNewsByTag(/* Any number of parameters */ String tag) {
+		List<Document> docList = this.newsRepo.getNewsByTag(tag);
+		List<News> newsList = new LinkedList<>();
+		for(Document d : docList) {
+			newsList.add(Utils.toNews(d));
+		}
+		return newsList;
 	}
-	
+
+
 }

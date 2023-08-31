@@ -6,11 +6,16 @@ import java.util.UUID;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mongodb.MongoWriteException;
 
@@ -82,12 +87,30 @@ public class NewsRepository {
 // )
 
 	public List<Document> getTagAndCount() {
-		UnwindOperation unwind = 
+		UnwindOperation unwind = Aggregation.unwind("tags");
+		GroupOperation group = Aggregation.group("tags")
+			.push("_id").as("tags")
+			.count().as("count");
+			
+		SortOperation sort1 = Aggregation.sort(Sort.by(Direction.DESC, "count"));
+		SortOperation sort2 = Aggregation.sort(Sort.by(Direction.ASC, "_id"));
+		Aggregation pipeline = Aggregation.newAggregation(unwind, group, sort1, sort2);
+		return template.aggregate(pipeline, "info", Document.class).getMappedResults();
 	}
 
 	
 	// TODO: Task 3
 	// Write the native Mongo query in the comment above the method
 
+	//db.info.aggregate(
+//   [
+//   {$unwind: "$tags"},    
+//   ]
+// )
+	public List<Document> getNewsByTag(@PathVariable String tag) {
+		UnwindOperation unwind = Aggregation.unwind("tags");
+		Aggregation pipeline = Aggregation.newAggregation(unwind);
+		return template.aggregate(pipeline, "info", Document.class).getMappedResults();
+	}
 
 }

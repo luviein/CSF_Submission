@@ -9,3 +9,15 @@ Time:
 
 
 <h2>Top Tags</h2>
+
+
+<div *ngIf="tagAndCount.length > 0; else noItems">
+  <div *ngFor="let tag of tagAndCount">
+    <a [routerLink]="['/news', tag.tag]">{{tag.tag}} &nbsp; <span>(<span>{{tag.count}}</span>)</span></a>
+
+  </div>
+</div>
+
+<ng-template #noItems>
+  <span>No Tags Found</span>
+</ng-template>

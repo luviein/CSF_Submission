@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -95,20 +96,18 @@ public class NewsController {
 	
 
 	// TODO: Task 2
-	@GetMapping(path="/getTopTags")
-	public ResponseEntity<String> getTopTags (Integer time) {
-		try{
-			List<TagCount> tagCountList = this.svc.getTags(time);
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-
+	@GetMapping(path="/getTopTags", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<TagCount> getTopTags () {
+		return this.svc.getTags();
 		
 	}
 
 
 	// TODO: Task 3
+
+	@GetMapping(path="/getNewsByTag")
+	public List<News> getNewsByTag(@PathVariable String tag) {
+		return this.svc.getNewsByTag(tag);
+	}
 
 }

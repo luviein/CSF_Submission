@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NewsServerService } from 'src/app/Service/news-server.service';
+
 import { postComments } from 'src/app/postNews.model';
 
 @Component({

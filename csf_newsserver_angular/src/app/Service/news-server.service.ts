@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ElementRef, Injectable } from '@angular/core';
 import { postComments } from '../postNews.model';
 import {firstValueFrom } from 'rxjs';
@@ -38,7 +38,21 @@ export class NewsServerService {
 
 
     return firstValueFrom(
-      this.http.post<any>("http://localhost:8080/upload", data)
+      this.http.post<any>("/upload", data)
+    )
+  }
+
+  getTag() : Promise<any> {
+    return firstValueFrom(
+      this.http.get<any>("/getTopTags")
+    )
+  }
+
+  getNewsByTag(tag: string) : Promise<any> {
+    const params = new HttpParams()
+    .set("tag", tag)
+    return firstValueFrom(
+      this.http.get<any>("/getNewsByTag", {params})
     )
   }
 }
